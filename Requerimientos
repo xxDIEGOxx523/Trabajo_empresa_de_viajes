@@ -1,0 +1,32 @@
+# 1. Requerimientos funcionales
+
+Los requerimientos funcionales describen las acciones y operaciones que el sistema debe permitir realizar para gestionar correctamente los destinos turísticos, paquetes, clientes y reservas de la agencia Viajes Aventura.
+
+| ID | Requerimiento funcional | Prioridad | Criterio de aceptación |
+|---|---|---|---|
+| RF-01 | El sistema debe permitir registrar nuevos destinos turísticos con su nombre, país, ciudad, descripción y costo base. | Alta | Al registrar un destino con datos válidos, este queda almacenado y aparece en el listado de destinos. |
+| RF-02 | El sistema debe permitir modificar la información de los destinos existentes. | Alta | Al actualizar un destino, los nuevos datos quedan guardados y se muestran correctamente al consultarlo. |
+| RF-03 | El sistema debe permitir eliminar destinos turísticos existentes. | Alta | Al eliminar un destino, el sistema confirma la operación y este deja de aparecer como destino disponible. |
+| RF-04 | El sistema debe permitir consultar y listar los destinos turísticos disponibles. | Alta | El sistema muestra los destinos registrados y permite identificar cuáles se encuentran disponibles. |
+| RF-05 | El sistema debe permitir crear paquetes turísticos combinando uno o más destinos. | Alta | Al crear un paquete, se pueden seleccionar varios destinos y estos quedan asociados correctamente al paquete. |
+| RF-06 | El sistema debe permitir definir las fechas y los costos asociados a cada paquete turístico. | Alta | Cada paquete registrado muestra sus fechas de inicio y término, además de su costo correspondiente. |
+| RF-07 | El sistema debe calcular el costo de un paquete turístico considerando los destinos seleccionados. | Alta | El sistema obtiene y muestra el costo del paquete a partir de los costos de los destinos asociados, aplicando la regla de cálculo definida. |
+| RF-08 | El sistema debe permitir consultar la disponibilidad de los paquetes turísticos. | Alta | Al consultar un paquete, el sistema informa si se encuentra disponible o no, según las reglas de disponibilidad establecidas. |
+| RF-09 | El sistema debe permitir que los clientes creen una cuenta y registren sus datos personales. | Alta | Un cliente puede completar su registro con datos válidos y su cuenta queda almacenada en el sistema. |
+| RF-10 | El sistema debe permitir que los clientes inicien sesión mediante sus credenciales. | Alta | El sistema permite el acceso con credenciales válidas y rechaza los intentos con credenciales incorrectas. |
+| RF-11 | El sistema debe permitir que los clientes realicen reservas de paquetes turísticos disponibles. | Alta | Un cliente autenticado puede reservar un paquete disponible y recibir una confirmación de la operación. |
+| RF-12 | El sistema debe almacenar las reservas realizadas por los clientes en la base de datos. | Alta | Después de confirmar una reserva, sus datos quedan registrados y pueden recuperarse posteriormente. |
+| RF-13 | El sistema debe permitir que los clientes consulten su historial de reservas. | Alta | Al ingresar al historial, el cliente visualiza las reservas asociadas a su cuenta. |
+
+# 2. Requerimientos no funcionales
+
+Los requerimientos no funcionales establecen las condiciones de seguridad, calidad y funcionamiento que debe cumplir el sistema durante su utilización.
+
+| ID | Requerimiento no funcional | Prioridad | Criterio de aceptación |
+|---|---|---|---|
+| RNF-01 | El sistema debe proteger las credenciales de los usuarios mediante mecanismos seguros de almacenamiento. | Alta | Las contraseñas se almacenan como hashes y no como texto plano en la base de datos. |
+| RNF-02 | El sistema debe validar los datos ingresados por los usuarios antes de procesarlos o almacenarlos. | Alta | El sistema rechaza datos vacíos, formatos incorrectos y valores que no cumplan las validaciones establecidas. |
+| RNF-03 | El sistema debe proteger la información personal y sensible de los clientes frente a accesos no autorizados. | Alta | Los usuarios no pueden acceder a información privada de otros clientes mediante las funciones disponibles. |
+| RNF-04 | El sistema debe mantener la persistencia de la información mediante una conexión con una base de datos. | Alta | Los destinos, paquetes, clientes y reservas permanecen almacenados después de cerrar y volver a ejecutar el programa. |
+| RNF-05 | El sistema debe desarrollarse utilizando programación orientada a objetos y una arquitectura organizada por capas. | Alta | El código presenta una separación entre presentación, lógica de negocio y persistencia de datos. |
+| RNF-06 | El sistema debe mantener una nomenclatura uniforme en el desarrollo del proyecto. | Media | El código Python y SQL utilizan nombres en inglés, mientras que los mensajes presentados al usuario están en español. |
