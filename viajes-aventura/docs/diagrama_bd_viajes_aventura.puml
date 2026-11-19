@@ -1,0 +1,58 @@
+@startuml
+ title Viajes Aventura - Initial Database Model
+ hide circle
+ left to right direction
+ entity "CUSTOMERS" as customers {
+  * id : INTEGER <<PK>>
+  --
+  full_name : VARCHAR(100)
+  email : VARCHAR(150) <<UNIQUE>>
+  phone : VARCHAR(20)
+  password_hash : VARCHAR(255)
+  created_at : DATETIME
+  is_active : BOOLEAN
+ }
+ entity "DESTINATIONS" as destinations {
+  * id : INTEGER <<PK>>
+  --
+  name : VARCHAR(100)
+  country : VARCHAR(80)
+  city : VARCHAR(80)
+  description : TEXT
+  base_cost : DECIMAL(10,2)
+  is_active : BOOLEAN
+  created_at : DATETIME
+ }
+ entity "PACKAGES" as packages {
+  * id : INTEGER <<PK>>
+  --
+  name : VARCHAR(120)
+  description : TEXT
+  start_date : DATE
+  end_date : DATE
+  total_cost : DECIMAL(10,2)
+  max_capacity : INTEGER
+  status : VARCHAR(20)
+  created_at : DATETIME
+ }
+ entity "PACKAGE_DESTINATIONS" as package_destinations {
+  * package_id : INTEGER <<PK, FK>>
+  * destination_id : INTEGER <<PK, FK>>
+  --
+  display_order : INTEGER
+ }
+ entity "RESERVATIONS" as reservations {
+  * id : INTEGER <<PK>>
+  --
+  customer_id : INTEGER <<FK>>
+  package_id : INTEGER <<FK>>
+  reservation_date : DATETIME
+  number_of_people : INTEGER
+  total_price : DECIMAL(10,2)
+  status : VARCHAR(20)
+ }
+ customers ||--o{ reservations
+ packages ||--o{ reservations
+ packages ||--o{ package_destinations
+ destinations ||--o{ package_destinations
+@enduml
