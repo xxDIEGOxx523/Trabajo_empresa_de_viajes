@@ -1,0 +1,3 @@
+# Dependencias para configuración y conexión MySQL
+python-dotenv>=1.0
+mysql-connector-python>=8.0
