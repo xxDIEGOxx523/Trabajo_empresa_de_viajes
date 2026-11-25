@@ -1,0 +1,77 @@
+@startuml
+title Viajes Aventura - Integrated UML Class Diagram (Sprint 2)
+
+class Destination {
+  - id: int
+  - name: str
+  - country: str
+  - description: str
+  - base_cost: float
+  - is_active: bool
+  + validate(): void
+  + retire(): void
+  + reactivate(): void
+}
+
+class TravelPackage {
+  - id: int
+  - name: str
+  - description: str
+  - is_active: bool
+  + add_stop(destination: Destination, visit_order: int): void
+  + validate_itinerary(): void
+}
+
+class ItineraryStop {
+  - id: int
+  - visit_order: int
+  + change_order(new_order: int): void
+}
+
+class PackageDeparture {
+  - id: int
+  - start_date: date
+  - end_date: date
+  - price: float
+  - max_capacity: int
+  - status: str
+  + calculate_available_seats(): int
+}
+
+class Customer {
+  - id: int
+  - full_name: str
+  - email: str
+  - password_hash: str
+  - role: str
+}
+
+class Reservation {
+  - id: int
+  - reserved_at: datetime
+  - contracted_unit_price: float
+  - status: str
+}
+
+class ReservationPassenger {
+  - id: int
+  - passenger_name: str
+  - document_id: str
+  - trip_status: str
+}
+
+class PassengerStageProgress {
+  - id: int
+  - stage_status: str
+  - updated_at: datetime
+}
+
+TravelPackage "1" *-- "0..*" ItineraryStop : includes
+Destination "1" <-- "0..*" ItineraryStop : used in
+TravelPackage "1" o-- "0..*" PackageDeparture : scheduled as
+Customer "1" -- "0..*" Reservation : books
+PackageDeparture "1" -- "0..*" Reservation : receives
+Reservation "1" *-- "1..*" ReservationPassenger : carries
+ReservationPassenger "1" *-- "0..*" PassengerStageProgress : tracks
+ItineraryStop "1" <-- "0..*" PassengerStageProgress : references
+@enduml

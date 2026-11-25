@@ -1,0 +1,46 @@
+@startuml
+title Viajes Aventura - UML Use Case Diagram (3 Milestones)
+left to right direction
+
+actor "Administrador" as Admin
+actor "Cliente" as Client
+
+rectangle "Sistema Viajes Aventura" {
+  package "Hito 1: Destinos" {
+    usecase "Registrar destino" as UC1
+    usecase "Consultar / buscar destinos" as UC2
+    usecase "Modificar destino" as UC3
+    usecase "Retirar / reactivar destino" as UC4
+  }
+
+  package "Hito 2: Paquetes" {
+    usecase "Preparar paquete (2+ destinos)" as UC5
+    usecase "Programar salida con precio y cupos" as UC6
+    usecase "Consultar paquetes y disponibilidad" as UC7
+  }
+
+  package "Hito 3: Reservas y Viaje" {
+    usecase "Registrarse e iniciar sesión" as UC8
+    usecase "Reservar paquete para pasajeros" as UC9
+    usecase "Consultar historial y estado de viaje" as UC10
+    usecase "Registrar avance por etapas del viaje" as UC11
+    usecase "Consultar pasajeros por paquete/período" as UC12
+  }
+}
+
+Admin --> UC1
+Admin --> UC2
+Admin --> UC3
+Admin --> UC4
+Admin --> UC5
+Admin --> UC6
+Admin --> UC7
+Admin --> UC11
+Admin --> UC12
+
+Client --> UC2
+Client --> UC7
+Client --> UC8
+Client --> UC9
+Client --> UC10
+@enduml
