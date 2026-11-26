@@ -1,11 +1,12 @@
-# Environment variables
+# Local environment variables (never commit credentials)
 .env
 
-# Python artifacts
+# Python cache & artifacts
 __pycache__/
 *.py[cod]
 *$py.class
 .pytest_cache/
+.coverage
 
 # Virtual environments
 .venv/
@@ -17,7 +18,7 @@ env/
 *.sqlite
 *.sqlite3
 
-# IDE / OS
+# IDEs & OS
 .vscode/
 .idea/
 .DS_Store

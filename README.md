@@ -1,94 +1,53 @@
-▒▒▒▒▒▒▒▓
-▒▒▒▒▒▒▒▓▓▓
-▒▓▓▓▓▓▓░░░▓
-▒▓░░░░▓░░░░▓
-▓░░░░░░▓░▓░▓
-▓░░░░░░▓░░░▓
-▓░░▓░░░▓▓▓▓
-▒▓░░░░▓▒▒▒▒▓
-▒▒▓▓▓▓▒▒▒▒▒▓
-▒▒▒▒▒▒▒▒▓▓▓▓
-▒▒▒▒▒▓▓▓▒▒▒▒▓
-▒▒▒▒▓▒▒▒▒▒▒▒▒▓
-▒▒▒▓▒▒▒▒▒▒▒▒▒▓
-▒▒▓▒▒▒▒▒▒▒▒▒▒▒▓
-▒▓▒▓▒▒▒▒▒▒▒▒▒▓
-▒▓▒▓▓▓▓▓▓▓▓▓▓
-▒▓▒▒▒▒▒▒▒▓
-▒▒▓▒▒▒▒▒▓
+# Viajes Aventura — Sprint 2 (Diseño Integrado, 3 BPMN, Ramas Git y CRUD de Destinos)
 
-# Viajes Aventura — Sprint 2 (Diseño Integrado y CRUD de Destinos)
-
-Proyecto desarrollado con arquitectura por capas, código Python y SQL **100% en inglés** e interfaz de usuario interactiva **en español**, compatible con **SQLite** y **MySQL**.
+Solución completa de **Viajes Aventura** correspondiente al Sprint 2:
+- **Tres diagramas BPMN visuales** (`.png` y `.svg`) + fuentes editables `.puml` en `docs/bpmn/`.
+- **Ramas Git organizadas por tarjeta Jira** (`docs/git_workflow.md` y script automático `scripts/init_git_branches.py` / `init_git_branches.bat`).
+- **Arquitectura por capas** con código 100% en inglés, interfaz navegable en español y compatibilidad verificada con **SQLite** y **MySQL / WampServer**.
 
 ## Estructura del Proyecto
 ```text
-viajes_aventura_sprint2/
+viajes_aventura_sprint2_v3/
 ├── docs/
+│   ├── bpmn/
+│   │   ├── bpmn_1_gestion_destinos.png (.svg / .puml)
+│   │   ├── bpmn_2_preparacion_paquetes.png (.svg / .puml)
+│   │   └── bpmn_3_reservas_seguimiento.png (.svg / .puml)
+│   ├── ai_design_audit.md
 │   ├── bpmn_processes.md
 │   ├── class_diagram.puml
 │   ├── database_validation_qa.md
+│   ├── git_workflow.md
+│   ├── requirements.md
 │   └── use_case_diagram.puml
+├── scripts/
+│   └── init_git_branches.py
 ├── src/
 │   ├── domain/
-│   │   ├── destination.py
-│   │   └── models.py
 │   ├── persistence/
-│   │   ├── database.py
-│   │   ├── destination_dao.py
-│   │   ├── schema_mysql.sql
-│   │   └── schema_sqlite.sql
 │   ├── services/
-│   │   └── destination_service.py
 │   └── ui/
-│       └── console_ui.py
 ├── tests/
-│   └── test_destination_crud.py
 ├── .env.example
 ├── .gitignore
+├── init_git_branches.bat
 ├── main.py
 ├── requirements.txt
 └── seed.py
 ```
 
-## Preparación del Entorno
-1. Crear entorno virtual e instalar dependencias:
-   ```bash
-   python -m venv .venv
-   # Windows: .venv\Scripts\activate
-   # Linux/Mac: source .venv/bin/activate
-   pip install -r requirements.txt
-   ```
-2. Crear el archivo `.env` local a partir de `.env.example`:
-   ```bash
-   cp .env.example .env
-   ```
-
-## Ejecución con SQLite (por defecto)
-1. Asegúrate de tener `DB_ENGINE=sqlite` en `.env`.
-2. Carga los 3 destinos de ejemplo (Santiago, Buenos Aires, Mendoza):
-   ```bash
-   python seed.py
-   ```
-3. Inicia la interfaz interactiva:
-   ```bash
-   python main.py
-   ```
-
-## Ejecución con MySQL
-1. Ejecuta `src/persistence/schema_mysql.sql` en tu servidor MySQL (o crea la base `viajes_aventura`).
-2. Cambia en tu `.env` local:
-   ```env
-   DB_ENGINE=mysql
-   MYSQL_HOST=localhost
-   MYSQL_PORT=3306
-   MYSQL_USER=tu_usuario
-   MYSQL_PASSWORD=tu_clave
-   MYSQL_DATABASE=viajes_aventura
-   ```
-3. Ejecuta `python seed.py` y luego `python main.py`.
-
-## Pruebas Automatizadas
+## 1. Inicializar las Ramas Git del Sprint 2
+Ejecuta una sola vez en la raíz del proyecto (o haz doble clic en `init_git_branches.bat` en Windows):
 ```bash
+python scripts/init_git_branches.py
+```
+Esto crea `main` y las 6 ramas correspondientes a las tarjetas de Jira (`docs/va-20-database-model-v2`, `docs/va-21-bpmn-three-processes`, `docs/va-22-use-case-diagram`, `docs/va-23-class-diagram-architecture`, `feature/va-24-destinations-crud`, `fix/va-25-mysql-wampserver-collation`).
+
+## 2. Preparación del Entorno y Ejecución
+```bash
+pip install -r requirements.txt
+cp .env.example .env
+python seed.py
 python -m unittest discover -s tests -v
+python main.py
 ```
