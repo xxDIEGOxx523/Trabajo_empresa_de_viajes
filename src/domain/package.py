@@ -28,6 +28,9 @@ class TravelPackage:
             raise ValueError("No se puede agregar un destino retirado a un paquete nuevo.")
         self.stops.append(ItineraryStop(destination=destination, visit_order=visit_order))
 
+    def get_itinerary(self) -> List[ItineraryStop]:
+        return sorted(self.stops, key=lambda stop: stop.visit_order)
+
     def validate_itinerary(self) -> None:
         if len(self.stops) < 2:
             raise ValueError("Un paquete turístico debe combinar al menos dos destinos.")
@@ -41,31 +44,4 @@ class PackageDeparture:
     price: float
     max_capacity: int
     status: str = "OPEN"
-    id: Optional[int] = None
-
-
-@dataclass
-class Customer:
-    full_name: str
-    email: str
-    password_hash: str
-    role: str = "CLIENT"
-    id: Optional[int] = None
-
-
-@dataclass
-class ReservationPassenger:
-    passenger_name: str
-    document_id: str
-    trip_status: str = "PENDING"
-    id: Optional[int] = None
-
-
-@dataclass
-class Reservation:
-    customer_id: int
-    departure_id: int
-    contracted_unit_price: float
-    status: str = "CONFIRMED"
-    passengers: List[ReservationPassenger] = field(default_factory=list)
     id: Optional[int] = None

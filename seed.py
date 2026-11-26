@@ -1,5 +1,5 @@
+from src.persistence.dao_factory import DAOFactory
 from src.persistence.database import DatabaseConnection
-from src.persistence.destination_dao import DestinationDAO
 from src.services.destination_service import DestinationService
 
 
@@ -14,8 +14,8 @@ def run_seed() -> None:
     db = DatabaseConnection()
     db.initialize_schema()
 
-    dao = DestinationDAO(db)
-    service = DestinationService(dao)
+    factory = DAOFactory(db)
+    service = DestinationService(factory.get_destination_dao())
 
     print(f"Cargando datos iniciales en motor: {db.engine.upper()}")
     for name, country, description, cost in SAMPLE_DESTINATIONS:
