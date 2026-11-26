@@ -7,9 +7,15 @@ from src.services.destination_service import DestinationService
 class ConsoleUI:
     WIDTH = 76
 
-    def __init__(self, destination_service: DestinationService, db_engine: str) -> None:
+    def __init__(
+        self,
+        destination_service: DestinationService,
+        db_engine: str,
+        db_info: str = "",
+    ) -> None:
         self.destination_service = destination_service
         self.db_engine = db_engine.upper()
+        self.db_info = db_info
 
     def _clear_screen(self) -> None:
         os.system("cls" if os.name == "nt" else "clear")
@@ -20,7 +26,10 @@ class ConsoleUI:
     def _print_header(self, title: str, breadcrumb: str = "") -> None:
         self._clear_screen()
         print("=" * self.WIDTH)
-        print(f"VIAJES AVENTURA  |  Motor BD: {self.db_engine}".center(self.WIDTH))
+        engine_banner = f"VIAJES AVENTURA  |  Motor BD: {self.db_engine}"
+        if self.db_info:
+            engine_banner += f" ({self.db_info})"
+        print(engine_banner.center(self.WIDTH))
         print("-" * self.WIDTH)
         print(title.center(self.WIDTH))
         if breadcrumb:
@@ -70,9 +79,10 @@ class ConsoleUI:
     def run(self) -> None:
         while True:
             self._print_header("MENÚ PRINCIPAL", "Inicio")
-            print("\n  [1] Gestión de Destinos")
-            print("  [2] Gestión de Paquetes Turísticos")
-            print("  [3] Reservas y Seguimiento de Viaje")
+            print("\n  [1] Gestión de Destinos (Hito 1 - CRUD Completo)")
+            print("  [2] Gestión de Paquetes Turísticos (Hito 2 - Próximo Sprint)")
+            print("  [3] Reservas y Seguimiento de Viaje (Hito 3 - Próximo Sprint)")
+            print("  [4] Estado de Conexión y Resumen de Datos")
             print("  [0] Salir del sistema")
 
             option = input("\n  Selecciona una opción: ").strip()
@@ -82,19 +92,39 @@ class ConsoleUI:
             elif option == "2":
                 self._print_header("PAQUETES TURÍSTICOS", "Inicio > Paquetes")
                 print("\n  [i] Este módulo integrará itinerarios de 2+ destinos, fechas y cupos.")
+                print("  [i] Tablas listas en BD: travel_packages, itinerary_stops, package_departures.")
                 print("  [i] Disponible en el siguiente incremento funcional (Sprint 3).")
                 self._pause()
             elif option == "3":
                 self._print_header("RESERVAS Y SEGUIMIENTO", "Inicio > Reservas")
                 print("\n  [i] Este módulo gestionará pasajeros, cupos y avance por etapas.")
+                print("  [i] Tablas listas en BD: customers, reservations, reservation_passengers.")
                 print("  [i] Disponible en el siguiente incremento funcional (Sprint 3).")
                 self._pause()
+            elif option == "4":
+                self._handle_system_status()
             elif option == "0":
                 print("\n  ¡Hasta pronto! Gracias por usar Viajes Aventura.\n")
                 break
             else:
                 print("\n  [!] Opción no válida. Intenta nuevamente.")
                 self._pause()
+
+    def _handle_system_status(self) -> None:
+        self._print_header("ESTADO DEL SISTEMA Y PERSISTENCIA", "Inicio > Estado")
+        all_dest = self.destination_service.list_destinations(include_retired=True)
+        active_count = sum(1 for d in all_dest if d.is_active)
+        retired_count = len(all_dest) - active_count
+
+        print("\n  " + "-" * 56)
+        print(f"  Motor activo        : {self.db_engine}")
+        if self.db_info:
+            print(f"  Detalle conexión    : {self.db_info}")
+        print(f"  Destinos totales    : {len(all_dest)}")
+        print(f"  Destinos activos    : {active_count}")
+        print(f"  Destinos retirados  : {retired_count}")
+        print("  " + "-" * 56)
+        self._pause()
 
     def _destinations_menu(self) -> None:
         while True:
@@ -183,7 +213,9 @@ class ConsoleUI:
             description=description,
             base_cost=base_cost,
         )
-        print(f"\n  [OK] Destino '{created.name}' ({created.country}) registrado con ID {created.id}.")
+        print(
+            f"\n  [OK] Destino '{created.name}' ({created.country}) registrado con ID {created.id}."
+        )
         self._pause()
 
     def _handle_update(self) -> None:
@@ -197,7 +229,9 @@ class ConsoleUI:
         dest_id = self._read_int("\n  ID del destino a modificar: ")
         current = self.destination_service.find_destination(dest_id)
 
-        print("\n  Deja el campo vacío y presiona [ENTER] para conservar el valor actual.")
+        print(
+            "\n  Deja el campo vacío y presiona [ENTER] para conservar el valor actual."
+        )
         name = input(f"  Nombre [{current.name}]: ").strip() or current.name
         country = input(f"  País [{current.country}]: ").strip() or current.country
         description = (

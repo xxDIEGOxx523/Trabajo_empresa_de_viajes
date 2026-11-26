@@ -1,12 +1,12 @@
 from typing import List, Optional
 from src.domain.destination import Destination
+from src.persistence.base_dao import BaseDAO
 from src.persistence.database import DatabaseConnection
 
 
-class DestinationDAO:
+class DestinationDAO(BaseDAO[Destination]):
     def __init__(self, db: DatabaseConnection) -> None:
-        self.db = db
-        self.ph = db.get_placeholder()
+        super().__init__(db)
 
     def _row_to_entity(self, row) -> Destination:
         if isinstance(row, dict):

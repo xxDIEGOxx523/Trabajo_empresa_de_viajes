@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from src.domain.destination import Destination
 from src.persistence.destination_dao import DestinationDAO
 
@@ -7,7 +7,9 @@ class DestinationService:
     def __init__(self, dao: DestinationDAO) -> None:
         self.dao = dao
 
-    def _ensure_unique(self, name: str, country: str, exclude_id: int = None) -> None:
+    def _ensure_unique(
+        self, name: str, country: str, exclude_id: Optional[int] = None
+    ) -> None:
         existing = self.dao.get_all(include_retired=True)
         for item in existing:
             if exclude_id is not None and item.id == exclude_id:

@@ -11,9 +11,17 @@ except ImportError:
 
 
 class DatabaseConnection:
-    def __init__(self, engine: Optional[str] = None, sqlite_path: Optional[str] = None) -> None:
+    def __init__(
+        self, engine: Optional[str] = None, sqlite_path: Optional[str] = None
+    ) -> None:
         self.engine = (engine or os.getenv("DB_ENGINE", "sqlite")).strip().lower()
-        self.sqlite_path = sqlite_path or os.getenv("SQLITE_DB_PATH", "viajes_aventura.db")
+        self.sqlite_path = sqlite_path or os.getenv(
+            "SQLITE_DB_PATH", "viajes_aventura.db"
+        )
+        self.mysql_charset = os.getenv("MYSQL_CHARSET", "utf8mb4").strip()
+        self.mysql_collation = os.getenv(
+            "MYSQL_COLLATION", "utf8mb4_unicode_ci"
+        ).strip()
 
     def get_connection(self):
         if self.engine == "sqlite":
@@ -31,7 +39,8 @@ class DatabaseConnection:
                 user=os.getenv("MYSQL_USER", "root"),
                 password=os.getenv("MYSQL_PASSWORD", ""),
                 database=os.getenv("MYSQL_DATABASE", "viajes_aventura"),
-                collation="utf8mb4_unicode_ci"
+                charset=self.mysql_charset,
+                collation=self.mysql_collation,
             )
 
         raise ValueError(f"Unsupported database engine: {self.engine}")
@@ -50,11 +59,20 @@ class DatabaseConnection:
                 cursor.executescript(sql_script)
             else:
                 schema_file = schema_dir / "schema_mysql.sql"
-                sql_script = schema_file.read_text(encoding="utf-8")
+                raw_lines = [
+                    line
+                    for line in schema_file.read_text(encoding="utf-8").splitlines()
+                    if not line.strip().startswith("--")
+                ]
+                sql_script = "\n".join(raw_lines)
                 for statement in sql_script.split(";"):
                     cleaned = statement.strip()
-                    if cleaned and not cleaned.upper().startswith(("CREATE DATABASE", "USE ")):
-                        cursor.execute(cleaned)
+                    if not cleaned:
+                        continue
+                    upper_stmt = cleaned.upper()
+                    if upper_stmt.startswith(("CREATE DATABASE", "USE ", "SET NAMES")):
+                        continue
+                    cursor.execute(cleaned)
             conn.commit()
         finally:
             conn.close()
