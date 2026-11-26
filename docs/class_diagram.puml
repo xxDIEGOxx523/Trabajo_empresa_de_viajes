@@ -19,6 +19,7 @@ class TravelPackage {
   - description: str
   - is_active: bool
   + add_stop(destination: Destination, visit_order: int): void
+  + get_itinerary(): list<ItineraryStop>
   + validate_itinerary(): void
 }
 
@@ -35,7 +36,6 @@ class PackageDeparture {
   - price: float
   - max_capacity: int
   - status: str
-  + calculate_available_seats(): int
 }
 
 class Customer {
